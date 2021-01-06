@@ -19,7 +19,7 @@ repositories {
 }
 
 dependencies {
-    compileOnly("org.checkerframework", "checker-qual","3.7.0")
+    compileOnly("org.checkerframework", "checker-qual","3.9.0")
     compileOnly("com.zaxxer", "HikariCP", "3.4.5")
 }
 
@@ -37,7 +37,7 @@ publishing {
     publications.create<MavenPublication>("maven") {
         from(components["java"])
         pom {
-            name.set("Storage")
+            name.set(project.name)
             description.set("A utility library to easily build and wrap HikariDataSources")
             url.set("https://github.com/PrimordialMoros/Storage")
             licenses {
