@@ -37,7 +37,7 @@ publishing {
     publications.create<MavenPublication>("maven") {
         from(components["java"])
         pom {
-            name.set(project.name)
+            name.set(project.name.toLowerCase())
             description.set("A utility library to easily build and wrap HikariDataSources")
             url.set("https://github.com/PrimordialMoros/Storage")
             licenses {
