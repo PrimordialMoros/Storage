@@ -19,10 +19,8 @@
 
 package me.moros.storage;
 
-import org.checkerframework.checker.nullness.qual.NonNull;
-
 public interface Storage {
-	@NonNull StorageType getType();
+  StorageType type();
 
-	void close();
+  void close();
 }

@@ -20,10 +20,9 @@
 package me.moros.storage;
 
 import com.zaxxer.hikari.HikariDataSource;
-import me.moros.storage.logging.Logger;
-import org.checkerframework.checker.nullness.qual.NonNull;
+import org.slf4j.Logger;
 
 @FunctionalInterface
 public interface StorageCreator<T extends Storage> {
-	T create(@NonNull StorageType engine, @NonNull Logger logger, @NonNull HikariDataSource source);
+  T create(StorageType engine, Logger logger, HikariDataSource source);
 }

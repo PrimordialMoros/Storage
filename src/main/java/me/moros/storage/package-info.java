@@ -17,12 +17,12 @@
  *   along with Storage.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package me.moros.storage.logging;
+@DefaultQualifier(value = NonNull.class, locations = TypeUseLocation.FIELD)
+@DefaultQualifier(value = NonNull.class, locations = TypeUseLocation.PARAMETER)
+@DefaultQualifier(value = NonNull.class, locations = TypeUseLocation.RETURN)
 
-public interface Logger {
-	void info(String s);
+package me.moros.storage;
 
-	void warn(String s);
-
-	void severe(String s);
-}
+import org.checkerframework.checker.nullness.qual.NonNull;
+import org.checkerframework.framework.qual.DefaultQualifier;
+import org.checkerframework.framework.qual.TypeUseLocation;

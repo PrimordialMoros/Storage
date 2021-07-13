@@ -1,1 +1,0 @@
-packageSearchIndex = [{"l":"All Packages","url":"allpackages-index.html"},{"l":"me.moros.storage"},{"l":"me.moros.storage.logging"}]

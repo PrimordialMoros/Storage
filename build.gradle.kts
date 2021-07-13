@@ -5,7 +5,7 @@ plugins {
 }
 
 group = "me.moros"
-version = "1.0.0"
+version = "2.0.0"
 
 java {
     sourceCompatibility = JavaVersion.VERSION_1_8
@@ -19,8 +19,8 @@ repositories {
 }
 
 dependencies {
-    compileOnly("org.checkerframework", "checker-qual","3.9.0")
-    compileOnly("com.zaxxer", "HikariCP", "3.4.5")
+    compileOnly("org.checkerframework", "checker-qual","3.15.0")
+    compileOnly("com.zaxxer", "HikariCP", "4.0.3")
 }
 
 tasks {
