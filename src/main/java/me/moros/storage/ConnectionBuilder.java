@@ -149,7 +149,8 @@ public class ConnectionBuilder<T extends Storage> {
         config.setDataSourceClassName("org.mariadb.jdbc.MariaDbDataSource");
         break;
       case MYSQL:
-        config.setDataSourceClassName("com.mysql.jdbc.jdbc2.optional.MysqlDataSource");
+        config.setDriverClassName("com.mysql.cj.jdbc.Driver");
+        config.setJdbcUrl("jdbc:mysql://" + host + ":" + port + "/" + database);
         break;
       case H2:
         config.setDriverClassName("org.h2.Driver");

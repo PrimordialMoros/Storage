@@ -5,11 +5,10 @@ plugins {
 }
 
 group = "me.moros"
-version = "2.0.0"
+version = "2.1.0"
 
 java {
-    sourceCompatibility = JavaVersion.VERSION_1_8
-    targetCompatibility = JavaVersion.VERSION_1_8
+    toolchain.languageVersion.set(JavaLanguageVersion.of(11))
     withJavadocJar()
     withSourcesJar()
 }
@@ -19,8 +18,8 @@ repositories {
 }
 
 dependencies {
-    compileOnly("org.checkerframework", "checker-qual","3.15.0")
-    compileOnly("com.zaxxer", "HikariCP", "4.0.3")
+    compileOnly("org.checkerframework", "checker-qual","3.18.1")
+    compileOnly("com.zaxxer", "HikariCP", "5.0.0")
 }
 
 tasks {
