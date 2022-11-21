@@ -2,13 +2,14 @@ plugins {
     java
     signing
     `maven-publish`
+    id("org.checkerframework").version("0.6.19")
 }
 
 group = "me.moros"
-version = "2.1.0"
+version = "2.2.0"
 
 java {
-    toolchain.languageVersion.set(JavaLanguageVersion.of(11))
+    toolchain.languageVersion.set(JavaLanguageVersion.of(17))
     withJavadocJar()
     withSourcesJar()
 }
@@ -18,17 +19,20 @@ repositories {
 }
 
 dependencies {
-    compileOnly("org.checkerframework", "checker-qual","3.18.1")
-    compileOnly("com.zaxxer", "HikariCP", "5.0.0")
+    compileOnly("com.zaxxer", "HikariCP", "5.0.1")
 }
 
 tasks {
-    withType<AbstractArchiveTask> {
-        isPreserveFileTimestamps = false
-        isReproducibleFileOrder = true
-    }
     withType<Sign>().configureEach {
         onlyIf { !isSnapshot() }
+    }
+    withType<JavaCompile> {
+        options.encoding = "UTF-8"
+    }
+    named<Copy>("processResources") {
+        from("LICENSE") {
+            rename { "${project.name.toUpperCase()}_${it}"}
+        }
     }
 }
 
@@ -36,7 +40,7 @@ publishing {
     publications.create<MavenPublication>("maven") {
         from(components["java"])
         pom {
-            name.set(project.name.toLowerCase())
+            name.set(project.name)
             description.set("A utility library to easily build and wrap HikariDataSources")
             url.set("https://github.com/PrimordialMoros/Storage")
             licenses {
@@ -61,11 +65,12 @@ publishing {
     if (project.hasProperty("ossrhUsername") && project.hasProperty("ossrhPassword")) {
         val user = project.property("ossrhUsername") as String?
         val pass = project.property("ossrhPassword") as String?
-        val repoUrl = if (isSnapshot()) uri("https://oss.sonatype.org/content/repositories/snapshots/") else uri("https://oss.sonatype.org/service/local/staging/deploy/maven2/")
+        val snapshotUrl = uri("https://oss.sonatype.org/content/repositories/snapshots/")
+        val releaseUrl = uri("https://oss.sonatype.org/service/local/staging/deploy/maven2/")
         repositories {
             maven {
                 credentials { username = user; password = pass }
-                url = repoUrl
+                url = if (isSnapshot()) snapshotUrl else releaseUrl
             }
         }
     }

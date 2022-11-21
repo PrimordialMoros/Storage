@@ -1,20 +1,20 @@
 /*
- *   Copyright 2020-2021 Moros <https://github.com/PrimordialMoros>
+ * Copyright 2020-2022 Moros
  *
- *    This file is part of Storage.
+ * This file is part of Storage.
  *
- *   Storage is free software: you can redistribute it and/or modify
- *   it under the terms of the GNU Affero General Public License as published by
- *   the Free Software Foundation, either version 3 of the License, or
- *   (at your option) any later version.
+ * Storage is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
  *
- *   Storage is distributed in the hope that it will be useful,
- *   but WITHOUT ANY WARRANTY; without even the implied warranty of
- *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *   GNU Affero General Public License for more details.
+ * Storage is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU Affero General Public License for more details.
  *
- *   You should have received a copy of the GNU Affero General Public License
- *   along with Storage.  If not, see <https://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Affero General Public License
+ * along with Storage. If not, see <https://www.gnu.org/licenses/>.
  */
 
 package me.moros.storage;
@@ -26,23 +26,56 @@ import java.util.Arrays;
  */
 public enum StorageType {
   // Remote databases
-  MARIADB("MariaDB", "mariadb.sql"),
-  MYSQL("MySQL", "mariadb.sql"),
-  POSTGRESQL("PostgreSQL", "postgre.sql"),
+  /**
+   * MySQL, remote
+   */
+  MYSQL("MySQL", "mariadb.sql", false),
+  /**
+   * MariaDB, remote
+   */
+  MARIADB("MariaDB", "mariadb.sql", false),
+  /**
+   * PostgreSQL, remote
+   */
+  POSTGRESQL("PostgreSQL", "postgre.sql", false),
   // Local databases
-  SQLITE("SQLite", "sqlite.sql"),
-  H2("H2", "h2.sql");
+  /**
+   * SQLite, local
+   */
+  SQLITE("SQLite", "sqlite.sql", true),
+  /**
+   * H2, local
+   */
+  H2("H2", "h2.sql", true),
+  /**
+   * HSQL, local
+   */
+  HSQL("HSQL", "hsql.sql", true);
 
   private final String name;
   private final String path;
+  private final boolean local;
 
-  StorageType(String name, String schemaFileName) {
+  StorageType(String name, String schemaFileName, boolean local) {
     this.name = name;
     this.path = schemaFileName;
+    this.local = local;
   }
 
+  /**
+   * Get the schema path for this type.
+   * @return the schema path
+   */
   public String schemaPath() {
     return path;
+  }
+
+  /**
+   * Check if this type is a local database.
+   * @return whether this type represents a local database type
+   */
+  public boolean isLocal() {
+    return local;
   }
 
   @Override
