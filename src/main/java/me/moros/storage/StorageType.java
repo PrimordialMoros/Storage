@@ -19,63 +19,49 @@
 
 package me.moros.storage;
 
-import java.util.Arrays;
+import java.util.Locale;
 
 /**
- * Enum holding the different types of supported storage and their schema file name.
+ * Enum holding the different types of supported storage.
  */
 public enum StorageType {
   // Remote databases
   /**
    * MySQL, remote
    */
-  MYSQL("MySQL", "mariadb.sql", false),
+  MYSQL("MySQL", "com.mysql.cj.jdbc.Driver", "com.mysql.cj.jdbc.MysqlDataSource", false),
   /**
    * MariaDB, remote
    */
-  MARIADB("MariaDB", "mariadb.sql", false),
+  MARIADB("MariaDB", "org.mariadb.jdbc.Driver", "org.mariadb.jdbc.MariaDbDataSource", false),
   /**
    * PostgreSQL, remote
    */
-  POSTGRESQL("PostgreSQL", "postgre.sql", false),
+  POSTGRESQL("PostgreSQL", "org.postgresql.ds.PGSimpleDataSource", "org.postgresql.Driver", false),
   // Local databases
   /**
    * SQLite, local
    */
-  SQLITE("SQLite", "sqlite.sql", true),
+  SQLITE("SQLite", "org.sqlite.JDBC", "org.sqlite.SQLiteDataSource", true),
   /**
    * H2, local
    */
-  H2("H2", "h2.sql", true),
+  H2("H2", "org.h2.Driver", "org.h2.jdbcx.JdbcDataSource", true),
   /**
    * HSQL, local
    */
-  HSQL("HSQL", "hsql.sql", true);
+  HSQL("HSQLDB", "org.hsqldb.jdbc.JDBCDriver", "org.hsqldb.jdbc.JDBCDataSource", true);
 
   private final String name;
-  private final String path;
+  private final String driver;
+  private final String dataSource;
   private final boolean local;
 
-  StorageType(String name, String schemaFileName, boolean local) {
+  StorageType(String name, String driver, String dataSource, boolean local) {
     this.name = name;
-    this.path = schemaFileName;
+    this.driver = driver;
+    this.dataSource = dataSource;
     this.local = local;
-  }
-
-  /**
-   * Get the schema path for this type.
-   * @return the schema path
-   */
-  public String schemaPath() {
-    return path;
-  }
-
-  /**
-   * Check if this type is a local database.
-   * @return whether this type represents a local database type
-   */
-  public boolean isLocal() {
-    return local;
   }
 
   @Override
@@ -84,13 +70,35 @@ public enum StorageType {
   }
 
   /**
-   * Attempts to parse the given string and return a {@link StorageType} enum.
-   * @param name the string to parse
-   * @param def the default value
-   * @return the parsed result or the default value if parsing was unsuccessful
+   * Get the real name for this storage type.
+   * @return the real name in lowercase
    */
-  public static StorageType parse(String name, StorageType def) {
-    return Arrays.stream(values()).filter(t -> name.equalsIgnoreCase(t.name)).findAny().orElse(def);
+  public String realName() {
+    return name.toLowerCase(Locale.ROOT);
+  }
+
+  /**
+   * Get the driver class name for this type.
+   * @return the driver class name
+   */
+  public String driver() {
+    return driver;
+  }
+
+  /**
+   * Get the data source class name for this type.
+   * @return the data source class name
+   */
+  public String dataSource() {
+    return dataSource;
+  }
+
+  /**
+   * Check if this type is a local database.
+   * @return whether this type represents a local database type
+   */
+  public boolean isLocal() {
+    return local;
   }
 }
 

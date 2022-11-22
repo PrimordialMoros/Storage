@@ -22,18 +22,36 @@ package me.moros.storage;
 import com.zaxxer.hikari.HikariDataSource;
 import org.slf4j.Logger;
 
+import static java.util.Objects.requireNonNull;
+
 /**
- * Represents a specialized {@link Storage} constructor.
- * @param <T> the type of storage object to construct
+ * Represents an immutable data structure for wrapping a {@link HikariDataSource}.
  */
-@FunctionalInterface
-public interface StorageCreator<T extends Storage> {
+public interface StorageDataSource {
   /**
-   * Create a new specialized Storage.
-   * @param engine the type of database
-   * @param logger the logger to assign
-   * @param source the data source to wrap
-   * @return the specialized storage instance
+   * The type of storage this data holds.
+   * @return the storage type
    */
-  T create(StorageType engine, Logger logger, HikariDataSource source);
+  StorageType type();
+
+  /**
+   * The logger this data holds.
+   * @return the logger
+   */
+  Logger logger();
+
+  /**
+   * The data source this data holds.
+   * @return the data source
+   */
+  HikariDataSource source();
+
+  /**
+   * Create a new builder.
+   * @param engine the storage engine to use
+   * @return a new builder
+   */
+  static Builder builder(StorageType engine) {
+    return new Builder(requireNonNull(engine));
+  }
 }

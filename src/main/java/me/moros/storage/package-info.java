@@ -20,7 +20,6 @@
 /**
  * Provides classes for creating database connections.
  */
-@DefaultQualifier(value = NonNull.class, locations = TypeUseLocation.FIELD)
 @DefaultQualifier(value = NonNull.class, locations = TypeUseLocation.PARAMETER)
 @DefaultQualifier(value = NonNull.class, locations = TypeUseLocation.RETURN)
 package me.moros.storage;

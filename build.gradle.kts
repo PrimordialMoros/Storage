@@ -6,7 +6,7 @@ plugins {
 }
 
 group = "me.moros"
-version = "2.2.0"
+version = "3.0.0"
 
 java {
     toolchain.languageVersion.set(JavaLanguageVersion.of(17))
