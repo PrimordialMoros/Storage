@@ -2,11 +2,11 @@ plugins {
     java
     signing
     `maven-publish`
-    id("org.checkerframework").version("0.6.19")
+    id("org.checkerframework").version("0.6.23")
 }
 
 group = "me.moros"
-version = "3.0.0"
+version = "3.1.0"
 
 java {
     toolchain.languageVersion.set(JavaLanguageVersion.of(17))
