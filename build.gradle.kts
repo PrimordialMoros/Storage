@@ -2,11 +2,11 @@ plugins {
     java
     signing
     `maven-publish`
-    id("org.checkerframework").version("0.6.23")
+    id("org.checkerframework").version("0.6.28")
 }
 
 group = "me.moros"
-version = "3.1.0"
+version = "3.2.0"
 
 java {
     toolchain.languageVersion.set(JavaLanguageVersion.of(17))
@@ -31,7 +31,7 @@ tasks {
     }
     named<Copy>("processResources") {
         from("LICENSE") {
-            rename { "${project.name.toUpperCase()}_${it}"}
+            rename { "${project.name.uppercase()}_${it}"}
         }
     }
 }

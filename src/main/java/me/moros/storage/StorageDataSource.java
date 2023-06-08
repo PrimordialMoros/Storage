@@ -1,5 +1,5 @@
 /*
- * Copyright 2020-2022 Moros
+ * Copyright 2020-2023 Moros
  *
  * This file is part of Storage.
  *
@@ -20,7 +20,6 @@
 package me.moros.storage;
 
 import com.zaxxer.hikari.HikariDataSource;
-import org.slf4j.Logger;
 
 import static java.util.Objects.requireNonNull;
 
@@ -33,12 +32,6 @@ public interface StorageDataSource {
    * @return the storage type
    */
   StorageType type();
-
-  /**
-   * The logger this data holds.
-   * @return the logger
-   */
-  Logger logger();
 
   /**
    * The data source this data holds.

@@ -1,5 +1,5 @@
 /*
- * Copyright 2020-2022 Moros
+ * Copyright 2020-2023 Moros
  *
  * This file is part of Storage.
  *
@@ -19,6 +19,7 @@
 
 package me.moros.storage;
 
+import java.nio.file.Path;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.Properties;
@@ -27,7 +28,6 @@ import java.util.function.Consumer;
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
 import org.checkerframework.checker.nullness.qual.Nullable;
-import org.slf4j.Logger;
 
 import static java.util.Objects.requireNonNull;
 
@@ -39,7 +39,7 @@ public class Builder {
   private final HikariConfig config;
   private final Properties dataSourceProperties;
 
-  private String path = "";
+  private Path path = null;
   private String host = "localhost";
   private String database = "";
   private int port;
@@ -56,11 +56,10 @@ public class Builder {
   /**
    * Set the file path for the connection.
    * This is only required for local file databases.
-   * You can include jdbc url options by appending them to the path.
    * @param path the path to the database file
    * @return the modified builder instance
    */
-  public Builder path(String path) {
+  public Builder path(Path path) {
     this.path = requireNonNull(path);
     return this;
   }
@@ -160,27 +159,23 @@ public class Builder {
   /**
    * Attempt to build.
    * @param poolName the hikari poolName to use
-   * @param logger the logger to use
    * @return the constructed Storage object if connection was successful, null otherwise.
    */
-  public @Nullable StorageDataSource build(String poolName, Logger logger) {
-    if (engine.isLocal() && path.isEmpty()) {
-      logger.warn("Connection path is missing!");
-      return null;
+  public @Nullable StorageDataSource build(String poolName) {
+    if (engine.isLocal() && path == null) {
+      throw new IllegalStateException("Connection path is missing!");
     }
-    logger.info("Loading storage provider... [" + engine + "]");
     config.setPoolName(poolName);
     if (optimize) {
       addOptimizedProperties();
     }
     config.setDataSourceProperties(dataSourceProperties);
-    String url = engine.isLocal() ? path : ("//" + host + ":" + port + "/" + database);
+    String url = engine.isLocal() ? path.toString() : ("//" + host + ":" + port + "/" + database);
     setDriverClassAndUrl(engine.driver(), formatUrl(url));
     HikariDataSource ds = new HikariDataSource(config);
     try (Connection ignored = ds.getConnection()) {
-      return new SimpleStorage(engine, logger, ds);
-    } catch (SQLException e) {
-      logger.error(e.getMessage(), e);
+      return new SimpleStorage(engine, ds);
+    } catch (SQLException ignored) {
     }
     return null;
   }
@@ -225,6 +220,6 @@ public class Builder {
     dataSourceProperties.put("maintainTimeStats", false);
   }
 
-  private record SimpleStorage(StorageType type, Logger logger, HikariDataSource source) implements StorageDataSource {
+  private record SimpleStorage(StorageType type, HikariDataSource source) implements StorageDataSource {
   }
 }
