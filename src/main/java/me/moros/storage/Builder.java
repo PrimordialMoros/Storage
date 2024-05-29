@@ -1,5 +1,5 @@
 /*
- * Copyright 2020-2023 Moros
+ * Copyright 2020-2024 Moros
  *
  * This file is part of Storage.
  *
@@ -34,7 +34,7 @@ import static java.util.Objects.requireNonNull;
 /**
  * Utility builder to create {@link StorageDataSource}.
  */
-public class Builder {
+public final class Builder {
   private final StorageType engine;
   private final HikariConfig config;
   private final Properties dataSourceProperties;
